@@ -6,8 +6,6 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-import SipHash
-
 extension Sequence where Element: SourceType {
     public func gather() -> MergedSource<Element.Value> {
         return MergedSource(sources: self)
@@ -69,7 +67,7 @@ public final class MergedSource<Value>: SignalerSource<Value> {
     }
 }
 
-private struct MergedSink<Value>: SinkType, SipHashable {
+private struct MergedSink<Value>: SinkType {
     let source: MergedSource<Value>
     let index: Int
 
@@ -77,9 +75,9 @@ private struct MergedSink<Value>: SinkType, SipHashable {
         source.receive(value, from: index)
     }
 
-    func appendHashes(to hasher: inout SipHasher) {
-        hasher.append(ObjectIdentifier(source))
-        hasher.append(index)
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(source))
+        hasher.combine(index)
     }
 
     static func ==(left: MergedSink, right: MergedSink) -> Bool {

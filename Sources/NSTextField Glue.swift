@@ -61,7 +61,7 @@ class GlueKitTextFieldDelegate<Value: LosslessStringConvertible>: NSObject, NSTe
         return Value(view.stringValue) != nil
     }
 
-    override func controlTextDidEndEditing(_ obj: Notification) {
+    func controlTextDidEndEditing(_ obj: Notification) {
         if let value = Value(view.stringValue) {
             model.value = value
         }

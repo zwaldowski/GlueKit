@@ -46,7 +46,10 @@ private class BracketingSink<Sink: SinkType>: SinkType {
         }
     }
 
-    var hashValue: Int { return sink.hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(sink)
+    }
+    
     static func ==(left: BracketingSink, right: BracketingSink) -> Bool {
         return left.sink == right.sink
     }

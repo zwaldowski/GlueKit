@@ -32,7 +32,7 @@ extension NSPopUpButton {
             self.values = AnyObservableArray.constant(Array(values))
         }
 
-        public init<U: UpdatableValueType>(model: U, values: DictionaryLiteral<String, Value>) where U.Value == Value {
+        public init<U: UpdatableValueType>(model: U, values: KeyValuePairs<String, Value>) where U.Value == Value {
             self.model = model.anyUpdatableValue
             self.values = AnyObservableArray.constant(Array(values.map { ($0.key, $0.value) }))
         }

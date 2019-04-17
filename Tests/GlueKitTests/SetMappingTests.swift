@@ -21,7 +21,10 @@ private class Book: Hashable {
         self.chapters = .init(chapters)
     }
 
-    var hashValue: Int { return ObjectIdentifier(self).hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+
     static func ==(a: Book, b: Book) -> Bool { return a === b }
 }
 

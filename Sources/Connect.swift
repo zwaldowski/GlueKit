@@ -87,8 +87,8 @@ internal struct ClosureSink<Value>: SinkType {
         sink(value)
     }
 
-    var hashValue: Int {
-        return identifier.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
     }
 
     static func ==(left: ClosureSink, right: ClosureSink) -> Bool {

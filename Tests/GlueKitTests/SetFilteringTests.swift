@@ -65,7 +65,7 @@ class SetFilteringTests: XCTestCase {
     }
 
     func test_filter_observableBool() {
-        var f = (0 ..< 15).map { Foo($0) }
+        let f = (0 ..< 15).map { Foo($0) }
         let set = SetVariable<Foo>(f[0 ..< 10])
         let even = set.filter { $0.isEven }
 
@@ -182,7 +182,9 @@ private final class Foo: Hashable, Comparable, ExpressibleByIntegerLiteral, Cust
         self.number = .init(number)
     }
     convenience init(integerLiteral value: Int) { self.init(value) }
-    var hashValue: Int { return ObjectIdentifier(self).hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
     var description: String { return "\(id)" }
     static func == (a: Foo, b: Foo) -> Bool { return a === b }
     static func < (a: Foo, b: Foo) -> Bool { return a.number.value < b.number.value }

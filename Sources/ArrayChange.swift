@@ -241,7 +241,7 @@ public enum ArrayModification<Element> {
     }
 }
 
-extension ArrayModification where Element: Equatable {
+extension ArrayModification: Equatable where Element: Equatable {
     /// Returns an array of modifications that perform the same update as this one, except all cases are removed where
     /// an element is replaced by a value that is equal to it.
     public func removingEqualChanges() -> [ArrayModification] {
@@ -289,6 +289,14 @@ extension ArrayModification where Element: Equatable {
             return old == new
         }
     }
+
+    public static func == (_ a: ArrayModification<Element>, _ b: ArrayModification<Element>) -> Bool {
+        return a.startIndex == b.startIndex
+            && a.inputCount == b.inputCount
+            && a.outputCount == b.outputCount
+            && a.oldElements == b.oldElements
+            && a.newElements == b.newElements
+    }
 }
 
 /// The result of an attempt at merging two array modifications.
@@ -302,6 +310,8 @@ internal enum ArrayModificationMergeResult<Element> {
     /// The modifications are intersecting, and merge to the specified new modification.
     case collapsedTo(ArrayModification<Element>)
 }
+
+extension ArrayModificationMergeResult: Equatable where Element: Equatable {}
 
 extension ArrayModification: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
@@ -335,9 +345,9 @@ extension ArrayModification: CustomStringConvertible, CustomDebugStringConvertib
     }
 }
 
-extension ArrayModification: CustomPlaygroundQuickLookable {
-    public var customPlaygroundQuickLook: PlaygroundQuickLook {
-        return .text(description)
+extension ArrayModification: CustomPlaygroundDisplayConvertible {
+    public var playgroundDescription: Any {
+        return String(describing: self)
     }
 }
 
@@ -356,18 +366,6 @@ extension RangeReplaceableCollection where Index == Int {
         }
     }
 }
-
-public func ==<Element: Equatable>(a: ArrayModification<Element>, b: ArrayModification<Element>) -> Bool {
-    return a.startIndex == b.startIndex
-        && a.inputCount == b.inputCount
-        && a.outputCount == b.outputCount
-        && a.oldElements == b.oldElements
-        && a.newElements == b.newElements
-}
-public func !=<Element: Equatable>(a: ArrayModification<Element>, b: ArrayModification<Element>) -> Bool {
-    return !(a == b)
-}
-
 
 //MARK: ArrayChange
 
@@ -548,21 +546,13 @@ extension ArrayChange: CustomReflectable {
     }
 }
 
-extension ArrayChange where Element: Equatable {
+extension ArrayChange: Equatable where Element: Equatable {
     public func removingEqualChanges() -> ArrayChange {
         return ArrayChange(initialCount: initialCount, modifications: modifications.flatMap { $0.removingEqualChanges() })
     }
 }
 
-public func ==<Element: Equatable>(a: ArrayChange<Element>, b: ArrayChange<Element>) -> Bool {
-    return (a.initialCount == b.initialCount
-        && a.modifications.elementsEqual(b.modifications, by: ==))
-}
-public func !=<Element: Equatable>(a: ArrayChange<Element>, b: ArrayChange<Element>) -> Bool {
-    return !(a == b)
-}
-
-extension RangeReplaceableCollection where Index == Int, IndexDistance == Int {
+extension RangeReplaceableCollection where Index == Int {
     /// Apply `change` to this array. The count of self must be the same as the initial count of `change`, or
     /// the operation will report a fatal error.
     public mutating func apply(_ change: ArrayChange<Element>) {

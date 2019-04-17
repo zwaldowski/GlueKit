@@ -56,7 +56,7 @@ class ArrayMappingTests: XCTestCase {
         XCTAssertEqual(titles.value, ["fuzzy", "baz", "fred"])
         let barney = Book("barney")
         mock.expecting(["begin", "3.replaceSlice([baz, fred], at: 1, with: [barney])", "end"]) {
-            _ = books.replaceSubrange(1 ..< 3, with: [barney])
+            books.replaceSubrange(1 ..< 3, with: [barney])
         }
         XCTAssertEqual(titles.value, ["fuzzy", "barney"])
 
@@ -103,7 +103,7 @@ class ArrayMappingTests: XCTestCase {
         XCTAssertEqual(titles.value, ["fuzzy", "baz", "fred"])
         let barney = Book("barney")
         mock.expecting(["begin", "3.replaceSlice([baz, fred], at: 1, with: [barney])", "end"]) {
-            _ = books.replaceSubrange(1 ..< 3, with: [barney])
+            books.replaceSubrange(1 ..< 3, with: [barney])
         }
         XCTAssertEqual(titles.value, ["fuzzy", "barney"])
 
@@ -131,7 +131,7 @@ class ArrayMappingTests: XCTestCase {
         _ = books[0] = Book("fuzzy")
         XCTAssertEqual(titles.value, ["fuzzy", "baz", "fred"])
         let barney = Book("barney")
-        _ = books.replaceSubrange(1 ..< 3, with: [barney])
+        books.replaceSubrange(1 ..< 3, with: [barney])
         XCTAssertEqual(titles.value, ["fuzzy", "barney"])
 
         // The observable doesn't know the title of a book may change, so it won't notice when we modify it.

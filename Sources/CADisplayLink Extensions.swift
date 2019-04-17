@@ -26,12 +26,12 @@ public class CADisplayLinkSource: SignalerSource<CADisplayLink> {
         precondition(self.runLoop == nil)
         let runLoop = RunLoop.current
         self.runLoop = runLoop
-        displayLink!.add(to: runLoop, forMode: RunLoopMode.commonModes)
+        displayLink!.add(to: runLoop, forMode: .common)
     }
 
     override func deactivate() {
         precondition(runLoop != nil)
-        displayLink!.remove(from: runLoop!, forMode: RunLoopMode.commonModes)
+        displayLink!.remove(from: runLoop!, forMode: .common)
         displayLink = nil
         runLoop = nil
     }

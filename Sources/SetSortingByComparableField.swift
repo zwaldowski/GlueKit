@@ -6,7 +6,6 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-import SipHash
 import BTree
 
 extension ObservableSetType where Element: AnyObject {
@@ -32,7 +31,7 @@ where Parent.Element: AnyObject, Field.Value: Comparable {
         }
     }
 
-    private struct FieldSink: SinkType, SipHashable {
+    private struct FieldSink: SinkType {
         typealias Owner = SetSortingByComparableField
 
         unowned(unsafe) let owner: Owner
@@ -42,9 +41,9 @@ where Parent.Element: AnyObject, Field.Value: Comparable {
             owner.applyFieldUpdate(update, from: element)
         }
 
-        func appendHashes(to hasher: inout SipHasher) {
-            hasher.append(ObjectIdentifier(owner))
-            hasher.append(element)
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(ObjectIdentifier(owner))
+            hasher.combine(element)
         }
 
         static func ==(left: FieldSink, right: FieldSink) -> Bool {

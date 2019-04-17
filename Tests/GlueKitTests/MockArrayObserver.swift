@@ -37,8 +37,9 @@ class MockArrayObserver<Element>: MockSinkProtocol {
         self.subscribe(to: source)
     }
 
-    convenience init<Observable: ObservableArrayType>(_ observable: Observable) where Observable.Change == Change {
-        self.init(observable.updates)
+    init<Observable: ObservableArrayType>(_ observable: Observable) where Observable.Element == Element {
+        state = .init({ describe($0) })
+        self.subscribe(to: observable.updates)
     }
 
     func receive(_ value: Update<Change>) {

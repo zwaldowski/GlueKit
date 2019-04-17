@@ -125,10 +125,10 @@ class NSUserDefaultsSupportTests: XCTestCase {
         XCTAssertEqual(updatable.value, 42)
 
         defaults.set(true, forKey: key)
-        XCTAssertEqual(updatable.value, 0) // kCFBooleanTrue is not directly convertible to Int
+        XCTAssertEqual(updatable.value, 1)
 
         defaults.set(42.5, forKey: key)
-        XCTAssertEqual(updatable.value, 42)
+        XCTAssertEqual(updatable.value, 0) // 42.5 is not directly convertible to Int without precision loss
 
         defaults.set("23", forKey: key)
         XCTAssertEqual(updatable.value, 0)
@@ -163,7 +163,7 @@ class NSUserDefaultsSupportTests: XCTestCase {
         XCTAssertEqual(updatable.value, 42)
 
         defaults.set(true, forKey: key)
-        XCTAssertEqual(updatable.value, 0.0) // kCFBooleanTrue is not directly convertible to Int
+        XCTAssertEqual(updatable.value, 1)
 
         defaults.set(42.5, forKey: key)
         XCTAssertEqual(updatable.value, 42.5)

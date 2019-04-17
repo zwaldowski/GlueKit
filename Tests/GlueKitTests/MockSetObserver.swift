@@ -37,8 +37,9 @@ class MockSetObserver<Element: Hashable & Comparable>: MockSinkProtocol {
         self.subscribe(to: source)
     }
 
-    convenience init<Observable: ObservableSetType>(_ observable: Observable) where Observable.Change == Change {
-        self.init(observable.updates)
+    init<Observable: ObservableSetType>(_ observable: Observable) where Observable.Element == Element {
+        state = .init({ describe($0) })
+        self.subscribe(to: observable.updates)
     }
 
     func receive(_ value: Update<Change>) {

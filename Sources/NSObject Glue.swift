@@ -31,7 +31,10 @@ private class ModernKVOObservation<Root: NSObject, Value>: Hashable {
         self.observation = object.observe(keyPath, options: [.prior, .old, .new], changeHandler: self.observeChange)
     }
 
-    var hashValue: Int { return sink.hashValue }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(sink)
+    }
+
     public static func ==(left: ModernKVOObservation, right: ModernKVOObservation) -> Bool {
         return left.sink == right.sink
     }

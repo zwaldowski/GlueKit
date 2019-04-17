@@ -10,20 +10,13 @@ public typealias SetUpdate<Element: Hashable> = Update<SetChange<Element>>
 public typealias SetUpdateSource<Element: Hashable> = AnySource<Update<SetChange<Element>>>
 
 public protocol ObservableSetType: ObservableType where Change == SetChange<Element> {
-    associatedtype Element
-
-    typealias Base = Set<Element>
+    associatedtype Element: Hashable
 
     var isBuffered: Bool { get }
     var count: Int { get }
-    var value: Set<Element> { get }
     func contains(_ member: Element) -> Bool
     func isSubset(of other: Set<Element>) -> Bool
     func isSuperset(of other: Set<Element>) -> Bool
-
-    var observableCount: AnyObservableValue<Int> { get }
-    var anyObservableValue: AnyObservableValue<Base> { get }
-    var anyObservableSet: AnyObservableSet<Element> { get }
 }
 
 extension ObservableSetType {
@@ -34,19 +27,10 @@ extension ObservableSetType {
     public func isSuperset(of other: Set<Element>) -> Bool { return value.isSuperset(of: other) }
 
     public var isEmpty: Bool { return count == 0 }
+}
 
-    internal var valueUpdates: AnySource<ValueUpdate<Set<Element>>> {
-        var value = self.value
-        return self.updates.map { event in
-            event.map { change in
-                let old = value
-                value.apply(change)
-                return ValueChange(from: old, to: value)
-            }
-        }.buffered()
-    }
-
-    internal var countUpdates: AnySource<ValueUpdate<Int>> {
+extension ObservableSetType {
+    var countUpdates: AnySource<ValueUpdate<Int>> {
         var count = self.count
         return self.updates.map { update in
             update.map { change in
@@ -61,7 +45,18 @@ extension ObservableSetType {
         return AnyObservableValue(getter: { self.count }, updates: self.countUpdates)
     }
 
-    public var anyObservableValue: AnyObservableValue<Base> {
+    var valueUpdates: AnySource<ValueUpdate<Set<Element>>> {
+        var value = self.value
+        return self.updates.map { event in
+            event.map { change in
+                let old = value
+                value.apply(change)
+                return ValueChange(from: old, to: value)
+            }
+        }.buffered()
+    }
+
+    public var anyObservableValue: AnyObservableValue<Set<Element>> {
         return AnyObservableValue(getter: { self.value }, updates: self.valueUpdates)
     }
 

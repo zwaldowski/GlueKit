@@ -60,8 +60,8 @@ private struct ChangesSink<Wrapped: SinkType>: SinkType where Wrapped.Value: Cha
         }
     }
 
-    var hashValue: Int {
-        return wrapped.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrapped)
     }
 
     static func ==(left: ChangesSink, right: ChangesSink) -> Bool {

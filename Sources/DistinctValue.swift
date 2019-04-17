@@ -6,8 +6,6 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-import SipHash
-
 private class DistinctSinkState<V> {
     typealias Value = ValueUpdate<V>
 
@@ -40,7 +38,7 @@ private class DistinctSinkState<V> {
     }
 }
 
-private struct DistinctSink<V, Sink: SinkType>: SinkType, SipHashable where Sink.Value == ValueUpdate<V> {
+private struct DistinctSink<V, Sink: SinkType>: SinkType where Sink.Value == ValueUpdate<V> {
     typealias Value = ValueUpdate<V>
 
     let owner: AnyObject
@@ -51,9 +49,9 @@ private struct DistinctSink<V, Sink: SinkType>: SinkType, SipHashable where Sink
         state?.applyUpdate(update, sink)
     }
 
-    func appendHashes(to hasher: inout SipHasher) {
-        hasher.append(ObjectIdentifier(owner))
-        hasher.append(sink)
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(owner))
+        hasher.combine(sink)
     }
 
     static func ==(left: DistinctSink, right: DistinctSink) -> Bool {
@@ -61,13 +59,13 @@ private struct DistinctSink<V, Sink: SinkType>: SinkType, SipHashable where Sink
     }
 }
 
-public extension ObservableValueType {
+extension ObservableValueType {
     public func distinct(_ areEquivalent: @escaping (Value, Value) -> Bool) -> AnyObservableValue<Value> {
         return DistinctObservableValue(self, by: areEquivalent).anyObservableValue
     }
 }
 
-public extension ObservableValueType where Value: Equatable {
+extension ObservableValueType where Value: Equatable {
     public func distinct() -> AnyObservableValue<Value> {
         return distinct(==)
     }
@@ -99,13 +97,13 @@ private class DistinctObservableValue<Input: ObservableValueType>: _AbstractObse
     }
 }
 
-public extension UpdatableValueType {
+extension UpdatableValueType {
     public func distinct(_ areEquivalent: @escaping (Value, Value) -> Bool) -> AnyUpdatableValue<Value> {
         return DistinctUpdatableValue(self, by: areEquivalent).anyUpdatableValue
     }
 }
 
-public extension UpdatableValueType where Value: Equatable {
+extension UpdatableValueType where Value: Equatable {
     public func distinct() -> AnyUpdatableValue<Value> {
         return distinct(==)
     }

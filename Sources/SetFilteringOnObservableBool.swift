@@ -6,8 +6,6 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-import SipHash
-
 extension ObservableSetType {
     public func filter<Field: ObservableValueType>(_ isIncluded: @escaping (Element) -> Field) -> AnyObservableSet<Element> where Field.Value == Bool {
         return SetFilteringOnObservableBool<Self, Field>(parent: self, isIncluded: isIncluded).anyObservableSet
@@ -29,7 +27,7 @@ where Field.Value == Bool {
         }
     }
     
-    private struct FieldSink: SinkType, SipHashable {
+    private struct FieldSink: SinkType {
         typealias Owner = SetFilteringOnObservableBool
         
         unowned(unsafe) let owner: Owner
@@ -38,10 +36,10 @@ where Field.Value == Bool {
         func receive(_ update: ValueUpdate<Field.Value>) {
             owner.applyFieldUpdate(update, from: element)
         }
-        
-        func appendHashes(to hasher: inout SipHasher) {
-            hasher.append(ObjectIdentifier(owner))
-            hasher.append(element)
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(ObjectIdentifier(owner))
+            hasher.combine(element)
         }
         
         static func ==(left: FieldSink, right: FieldSink) -> Bool {

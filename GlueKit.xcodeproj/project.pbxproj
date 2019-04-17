@@ -94,13 +94,9 @@
 		BB3982EF1EC109C8000CDCB5 /* UISearchBar Glue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3982EC1EC109C4000CDCB5 /* UISearchBar Glue.swift */; };
 		BB3982F01EC109C8000CDCB5 /* UISearchBar Glue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3982EC1EC109C4000CDCB5 /* UISearchBar Glue.swift */; };
 		BB3D12B21E49FC5A00097510 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12B11E49FC5A00097510 /* BTree.framework */; };
-		BB3D12B41E49FC5E00097510 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12B31E49FC5E00097510 /* SipHash.framework */; };
 		BB3D12B71E49FC7600097510 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12B51E49FC7600097510 /* BTree.framework */; };
-		BB3D12B81E49FC7600097510 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12B61E49FC7600097510 /* SipHash.framework */; };
 		BB3D12BB1E49FC8000097510 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12B91E49FC8000097510 /* BTree.framework */; };
-		BB3D12BC1E49FC8000097510 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12BA1E49FC8000097510 /* SipHash.framework */; };
 		BB3D12BF1E49FC8700097510 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12BD1E49FC8700097510 /* BTree.framework */; };
-		BB3D12C01E49FC8700097510 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3D12BE1E49FC8700097510 /* SipHash.framework */; };
 		BB3D12C11E49FD1700097510 /* GlueKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB55AD41C8F88F20050DDA9 /* GlueKit.framework */; };
 		BB4052021C958712003D8F5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB4052011C958712003D8F5B /* UIKit.framework */; };
 		BB471D9A1DA57FF8002550B0 /* SetSortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB471D991DA57FF8002550B0 /* SetSortingTests.swift */; };
@@ -621,15 +617,10 @@
 		BB318F6A1CB9922F0086EE83 /* UIBarButtonItem Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIBarButtonItem Extensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BB351AFC1DB81E67005F083F /* PerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB3982EC1EC109C4000CDCB5 /* UISearchBar Glue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISearchBar Glue.swift"; sourceTree = "<group>"; };
-		BB3D12AF1E49FBF500097510 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = "../../Library/Developer/Xcode/DerivedData/GlueKit-gstdcmlxjxkcnggtlmasijktewlg/Build/Products/Debug/SipHash.framework"; sourceTree = "<group>"; };
 		BB3D12B11E49FC5A00097510 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/iOS/BTree.framework; sourceTree = "<group>"; };
-		BB3D12B31E49FC5E00097510 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/iOS/SipHash.framework; sourceTree = "<group>"; };
 		BB3D12B51E49FC7600097510 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/Mac/BTree.framework; sourceTree = "<group>"; };
-		BB3D12B61E49FC7600097510 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/Mac/SipHash.framework; sourceTree = "<group>"; };
 		BB3D12B91E49FC8000097510 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/watchOS/BTree.framework; sourceTree = "<group>"; };
-		BB3D12BA1E49FC8000097510 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/watchOS/SipHash.framework; sourceTree = "<group>"; };
 		BB3D12BD1E49FC8700097510 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/tvOS/BTree.framework; sourceTree = "<group>"; };
-		BB3D12BE1E49FC8700097510 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/tvOS/SipHash.framework; sourceTree = "<group>"; };
 		BB3D92951D647E83003BEDBF /* SetReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetReference.swift; sourceTree = "<group>"; };
 		BB3D929A1D64862D003BEDBF /* ArrayReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayReference.swift; sourceTree = "<group>"; };
 		BB4052011C958712003D8F5B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -818,7 +809,6 @@
 				BB89902B1D5F842C0097F350 /* Foundation.framework in Frameworks */,
 				BB4052021C958712003D8F5B /* UIKit.framework in Frameworks */,
 				BB3D12B21E49FC5A00097510 /* BTree.framework in Frameworks */,
-				BB3D12B41E49FC5E00097510 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,7 +826,6 @@
 			files = (
 				BB8990271D5F84150097F350 /* Foundation.framework in Frameworks */,
 				BB3D12B71E49FC7600097510 /* BTree.framework in Frameworks */,
-				BB3D12B81E49FC7600097510 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,7 +843,6 @@
 			files = (
 				BB8990291D5F84210097F350 /* Foundation.framework in Frameworks */,
 				BB3D12BB1E49FC8000097510 /* BTree.framework in Frameworks */,
-				BB3D12BC1E49FC8000097510 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -864,7 +852,6 @@
 			files = (
 				BB89902D1D5F84340097F350 /* Foundation.framework in Frameworks */,
 				BB3D12BF1E49FC8700097510 /* BTree.framework in Frameworks */,
-				BB3D12C01E49FC8700097510 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -883,19 +870,14 @@
 			isa = PBXGroup;
 			children = (
 				BB3D12BD1E49FC8700097510 /* BTree.framework */,
-				BB3D12BE1E49FC8700097510 /* SipHash.framework */,
 				BB3D12B91E49FC8000097510 /* BTree.framework */,
-				BB3D12BA1E49FC8000097510 /* SipHash.framework */,
 				BB3D12B51E49FC7600097510 /* BTree.framework */,
-				BB3D12B61E49FC7600097510 /* SipHash.framework */,
-				BB3D12B31E49FC5E00097510 /* SipHash.framework */,
 				BB3D12B11E49FC5A00097510 /* BTree.framework */,
 				BB4052011C958712003D8F5B /* UIKit.framework */,
 				BB89902C1D5F84340097F350 /* Foundation.framework */,
 				BB89902A1D5F842C0097F350 /* Foundation.framework */,
 				BB8990281D5F84210097F350 /* Foundation.framework */,
 				BB8990251D5F84050097F350 /* Foundation.framework */,
-				BB3D12AF1E49FBF500097510 /* SipHash.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1459,12 +1441,12 @@
 					};
 					BBB55AD31C8F88F20050DDA9 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					BBB55ADC1C8F88F20050DDA9 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					BBB55AF01C8F8BE00050DDA9 = {
@@ -1487,6 +1469,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = BBB55AA81C8F80020050DDA9;
@@ -2237,6 +2220,7 @@
 			baseConfigurationReference = BBB55ACC1C8F80660050DDA9 /* version.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2246,12 +2230,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -2283,7 +2269,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
@@ -2293,6 +2279,7 @@
 			baseConfigurationReference = BBB55ACC1C8F80660050DDA9 /* version.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2302,12 +2289,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -2332,7 +2321,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				VERSION_INFO_PREFIX = "";
 			};

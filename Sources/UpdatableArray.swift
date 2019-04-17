@@ -19,24 +19,12 @@
 /// Instead of `updatableArray.sortInPlace()`, which is not available, consider using
 /// `updatableArray.value = updatableArray.value.sort()`. The latter will probably be much more efficient.
 public protocol UpdatableArrayType: ObservableArrayType, UpdatableType {
-
     // Required members
-    var value: [Element] { get nonmutating set }
-    func apply(_ update: ArrayUpdate<Element>)
     subscript(index: Int) -> Element { get nonmutating set }
     subscript(bounds: Range<Int>) -> ArraySlice<Element> { get nonmutating set }
-
-    // The following are defined in extensions but may be specialized in implementations:
-
-    var anyUpdatableValue: AnyUpdatableValue<[Element]> { get }
-    var anyUpdatableArray: AnyUpdatableArray<Element> { get }
 }
 
 extension UpdatableArrayType {
-    public func apply(_ update: Update<ValueChange<[Element]>>) {
-        self.apply(update.map { change in ArrayChange(from: change.old, to: change.new) })
-    }
-
     public var anyUpdatableValue: AnyUpdatableValue<[Element]> {
         return AnyUpdatableValue(getter: { self.value },
                                  apply: self.apply,
@@ -45,6 +33,12 @@ extension UpdatableArrayType {
 
     public var anyUpdatableArray: AnyUpdatableArray<Element> {
         return AnyUpdatableArray(box: UpdatableArrayBox(self))
+    }
+}
+
+extension UpdatableArrayType {
+    public func apply(_ update: Update<ValueChange<[Element]>>) {
+        self.apply(update.map { change in ArrayChange(from: change.old, to: change.new) })
     }
 
     public func replaceSubrange<C: Collection>(_ range: Range<Int>, with elements: C) where C.Iterator.Element == Element {

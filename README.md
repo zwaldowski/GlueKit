@@ -99,15 +99,14 @@ For Swift Package Manager, add the following entry to the dependencies list insi
 
 ### Standalone Development
 
-If you don't use CocoaPods, Carthage or SPM, you need to clone GlueKit, [BTree][btree] and [SipHash][siphash], 
+If you don't use CocoaPods, Carthage or SPM, you need to clone GlueKit and [BTree][btree], 
 and add references to their `xcodeproj` files to your project's workspace. You may put the clones wherever you like,
 but if you use Git for your app development, it is a good idea to set them up as submodules of your app's top-level 
 Git repository.
 
 [btree]: https://github.com/attaswift/BTree
-[siphash]: https://github.com/attaswift/SipHash
 
-To link your application binary with GlueKit, just add `GlueKit.framework`, `BTree.framework` and `SipHash.framework`
+To link your application binary with GlueKit, just add `GlueKit.framework` and `BTree.framework`
 from the BTree project to the Embedded Binaries section of your app target's General page in Xcode.
 As long as the GlueKit and BTree project files are referenced in your workspace, these frameworks will be listed in 
 the "Choose items to add" sheet that opens when you click on the "+" button of your target's Embedded Binaries list.

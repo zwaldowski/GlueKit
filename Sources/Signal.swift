@@ -268,8 +268,8 @@ private struct SignalSink<Value>: SinkType {
         signal.send(value)
     }
 
-    var hashValue: Int {
-        return ObjectIdentifier(signal).hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(signal))
     }
 
     static func ==(left: SignalSink, right: SignalSink) -> Bool {

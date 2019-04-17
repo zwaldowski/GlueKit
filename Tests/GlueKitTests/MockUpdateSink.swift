@@ -30,8 +30,9 @@ class MockUpdateSink<Change: ChangeType>: MockSinkProtocol {
         self.subscribe(to: source)
     }
 
-    convenience init<Observable: ObservableValueType>(_ observable: Observable) where Observable.Change == Change {
-        self.init(observable.updates)
+    init<Observable: ObservableType>(_ observable: Observable) where Observable.Change == Change {
+        state = .init({ describe($0) })
+        self.subscribe(to: observable.updates)
     }
 
     func receive(_ value: Update<Change>) {

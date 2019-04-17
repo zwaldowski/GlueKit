@@ -22,7 +22,10 @@ private class Author: Hashable {
         self.yearOfBirth = .init(yearOfBirth)
     }
 
-    var hashValue: Int { return name.value.hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name.value)
+    }
+
     static func == (a: Author, b: Author) -> Bool {
         return a.name.value == b.name.value && a.yearOfBirth.value == b.yearOfBirth.value
     }
@@ -41,7 +44,10 @@ private class Book: Hashable {
         self.pages = .init(pages)
     }
 
-    var hashValue: Int { return title.value.hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title.value)
+    }
+
     static func == (a: Book, b: Book) -> Bool {
         return (a.title.value == b.title.value
             && a.authors.value == b.authors.value

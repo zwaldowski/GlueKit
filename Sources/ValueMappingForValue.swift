@@ -6,7 +6,7 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-public extension ObservableValueType {
+extension ObservableValueType {
     /// Returns an observable that calculates `transform` on all current and future values of this observable.
     public func map<Output>(_ transform: @escaping (Value) -> Output) -> AnyObservableValue<Output> {
         return ValueMappingForValue<Self, Output>(parent: self, transform: transform).anyObservableValue

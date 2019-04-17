@@ -43,7 +43,7 @@ class SimpleSourcesTests: XCTestCase {
 
         let sink = MockSink<Int>()
 
-        _ = sink.expecting(42) {
+        sink.expecting(42) {
             source.add(sink)
         }
 

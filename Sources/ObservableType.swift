@@ -6,7 +6,7 @@
 //  Copyright © 2015–2017 Károly Lőrentey.
 //
 
-public protocol ObservableType {
+public protocol ObservableType: CustomPlaygroundDisplayConvertible {
     associatedtype Value
     associatedtype Change: ChangeType where Change.Value == Value
 
@@ -17,6 +17,12 @@ public protocol ObservableType {
 
     @discardableResult
     func remove<Sink: SinkType>(_ sink: Sink) -> Sink where Sink.Value == Update<Change>
+}
+
+extension ObservableType {
+    public var playgroundDescription: Any {
+        return value
+    }
 }
 
 extension ObservableType {

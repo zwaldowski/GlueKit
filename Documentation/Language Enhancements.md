@@ -267,14 +267,3 @@ Aggregate observation in GlueKit (e.g., `ArrayMappingForValueField`) needs to re
 ## Assorted Bugfixes
 
 This section lists compiler bugs that have a direct effect on GlueKit.
-
-### Generic subclass cannot override methos in non-generic superclass, and vice versa ([SR-2427])
-
-This compiler bug affects the design of `TimerSource`. To work around it, I had to add a dummy unusued type parameter to it, 
-and define a typealias to paper over the ugliness.
-
-[SR-2427]: https://bugs.swift.org/browse/SR-2427
-
-This bug [has been fixed][PR-5424] on Swift's master branch.
-
-[PR-5424]: https://github.com/apple/swift/pull/5424

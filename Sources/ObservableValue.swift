@@ -26,8 +26,7 @@ public typealias ValueUpdate<Value> = Update<ValueChange<Value>>
 /// Types implementing `ObservableValueType` are generally not type-safe; you must serialize all accesses to them
 /// (including connecting to any of their sources).
 ///
-public protocol ObservableValueType: ObservableType, CustomPlaygroundQuickLookable
-where Change == ValueChange<Value> {
+public protocol ObservableValueType: ObservableType where Change == ValueChange<Value> {
     /// Returns the type-erased version of this ObservableValueType.
     var anyObservableValue: AnyObservableValue<Value> { get }
 }
@@ -47,13 +46,6 @@ extension ObservableValueType {
         return futureValues.bracketed(hello: { self.value }, goodbye: { nil })
     }
 }
-
-extension ObservableValueType {
-    public var customPlaygroundQuickLook: PlaygroundQuickLook {
-        return PlaygroundQuickLook.text("\(value)")
-    }
-}
-
 
 /// The type erased representation of an ObservableValueType that contains a single value with simple changes.
 public struct AnyObservableValue<Value>: ObservableValueType {
@@ -174,7 +166,7 @@ where Updates.Value == Update<ValueChange<Value>> {
     }
 }
 
-public extension ObservableValueType {
+extension ObservableValueType {
     /// Creates a constant observable wrapping the given value. The returned observable is not modifiable and it will not ever send updates.
     public static func constant(_ value: Value) -> AnyObservableValue<Value> {
         return ConstantObservable(value).anyObservableValue

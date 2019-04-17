@@ -31,7 +31,7 @@ internal class TransactionalSignal<Change: ChangeType>: Signal<Update<Change>> {
     }
 }
 
-protocol TransactionalThing: class, SignalDelegate {
+protocol TransactionalThing: SignalDelegate {
     associatedtype Change: ChangeType
     
     var _signal: TransactionalSignal<Change>? { get set }

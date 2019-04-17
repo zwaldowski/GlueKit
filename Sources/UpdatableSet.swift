@@ -7,9 +7,6 @@
 //
 
 public protocol UpdatableSetType: ObservableSetType, UpdatableType {
-    var value: Base { get nonmutating set }
-    func apply(_ update: SetUpdate<Element>)
-
     // Optional members
     func remove(_ member: Element)
     func insert(_ member: Element)
@@ -18,9 +15,6 @@ public protocol UpdatableSetType: ObservableSetType, UpdatableType {
     func formIntersection(_ other: Set<Element>)
     func formSymmetricDifference(_ other: Set<Element>)
     func subtract(_ other: Set<Element>)
-    
-    var anyUpdatableValue: AnyUpdatableValue<Set<Element>> { get }
-    var anyUpdatableSet: AnyUpdatableSet<Element> { get }
 }
 
 extension UpdatableSetType {
@@ -74,6 +68,10 @@ extension UpdatableSetType {
     public func apply(_ update: ValueUpdate<Set<Element>>) {
         self.apply(update.map { change in SetChange(from: change.old, to: change.new) })
     }
+
+}
+
+extension UpdatableSetType {
 
     public var anyUpdatableValue: AnyUpdatableValue<Set<Element>> {
         return AnyUpdatableValue(

@@ -41,9 +41,6 @@ extension RefListElement {
 /// Elements in the refList may only be in a single list at a time.
 internal final class RefList<Element: RefListElement>: RandomAccessCollection, MutableCollection, RangeReplaceableCollection {
     fileprivate typealias Node = RefListNode<Element>
-    internal typealias Index = Int
-    internal typealias Indices = CountableRange<Int>
-    internal typealias Iterator = IndexingIterator<RefList>
 
     fileprivate var root: Node
 
@@ -80,7 +77,7 @@ internal final class RefList<Element: RefListElement>: RandomAccessCollection, M
         }
     }
 
-    internal subscript(bounds: Range<Int>) -> MutableRangeReplaceableRandomAccessSlice<RefList> {
+    internal subscript(bounds: Range<Int>) -> Slice<RefList> {
         get {
             return .init(base: self, bounds: bounds)
         }
@@ -253,7 +250,7 @@ internal final class RefList<Element: RefListElement>: RandomAccessCollection, M
 
     internal func removeSubrange(_ bounds: Range<Int>) {
         // TODO: Make this more efficient.
-        for index in CountableRange(bounds).reversed() {
+        for index in bounds.reversed() {
             self.remove(at: index)
         }
     }
@@ -368,7 +365,7 @@ extension RefListNode {
 
     func offset(of element: Element) -> Int {
         if isLeaf {
-            return elements.index { $0 === element }!
+            return elements.firstIndex { $0 === element }!
         }
         var offset = 0
         var found = false

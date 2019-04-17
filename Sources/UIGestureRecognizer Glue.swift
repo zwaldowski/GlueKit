@@ -18,19 +18,19 @@ extension UIGestureRecognizer {
 open class GlueForUIGestureRecognizer: GlueForNSObject {
     private var object: UIGestureRecognizer { return owner as! UIGestureRecognizer }
 
-    public lazy var state: AnyObservableValue<UIGestureRecognizerState>
+    public lazy var state: AnyObservableValue<UIGestureRecognizer.State>
         = ObservableGestureRecognizerState(self.object).anyObservableValue
 }
 
-private class ObservableGestureRecognizerState: _BaseObservableValue<UIGestureRecognizerState> {
+private class ObservableGestureRecognizerState: _BaseObservableValue<UIGestureRecognizer.State> {
     private unowned let _gestureRecognizer: UIGestureRecognizer
-    private var _value: UIGestureRecognizerState? = nil
+    private var _value: UIGestureRecognizer.State? = nil
 
     init(_ gestureRecognizer: UIGestureRecognizer) {
         _gestureRecognizer = gestureRecognizer
     }
 
-    override var value: UIGestureRecognizerState {
+    override var value: UIGestureRecognizer.State {
         return _gestureRecognizer.state
     }
 

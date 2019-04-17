@@ -14,7 +14,7 @@ private class Foo: Hashable, Comparable, CustomStringConvertible {
 
     init(_ i: Int) { self.i = i }
 
-    var hashValue: Int { return i.hashValue }
+    func hash(into hasher: inout Hasher) { hasher.combine(i) }
     static func ==(a: Foo, b: Foo) -> Bool { return a.i == b.i }
     static func <(a: Foo, b: Foo) -> Bool { return a.i < b.i }
     var description: String { return "\(i)" }

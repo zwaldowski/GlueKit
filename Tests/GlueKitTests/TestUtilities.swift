@@ -13,12 +13,3 @@ import Foundation
 @inline(never)
 func noop<Value>(_ value: Value) {
 }
-
-func XCTAssertEqual<E: Equatable>(_ a: @autoclosure () -> [[E]], _ b: @autoclosure () -> [[E]], message: String? = nil, file: StaticString = #file, line: UInt = #line) {
-    let av = a()
-    let bv = b()
-    if !av.elementsEqual(bv, by: ==) {
-        XCTFail(message ?? "\(av) is not equal to \(bv)", file: file, line: line)
-    }
-}
-

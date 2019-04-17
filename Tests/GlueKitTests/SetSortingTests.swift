@@ -38,7 +38,10 @@ private class Book: Hashable, CustomStringConvertible {
 
     init(_ title: String) { self.title = .init(title) }
 
-    var hashValue: Int { return ObjectIdentifier(self).hashValue }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+    
     var description: String { return "Book(\(title.value))" }
     static func ==(a: Book, b: Book) -> Bool { return a === b }
 }

@@ -30,12 +30,7 @@ public protocol ObservableArrayType: ObservableType, CustomReflectable where Cha
 
     // Extras
     var isBuffered: Bool { get }
-    var value: [Element] { get }
     subscript(index: Int) -> Element { get }
-    var observableCount: AnyObservableValue<Int> { get }
-
-    var anyObservableValue: AnyObservableValue<[Element]> { get }
-    var anyObservableArray: AnyObservableArray<Element> { get }
 }
 
 extension ObservableArrayType {
@@ -53,7 +48,19 @@ extension ObservableArrayType {
 }
 
 extension ObservableArrayType {
-    internal var valueUpdates: AnySource<ValueUpdate<[Element]>> {
+    var countUpdates: AnySource<ValueUpdate<Int>> {
+        return self.updates.map { update in
+            update.map { change in
+                change.countChange
+            }
+        }
+    }
+
+    public var observableCount: AnyObservableValue<Int> {
+        return AnyObservableValue(getter: { self.count }, updates: self.countUpdates)
+    }
+
+    var valueUpdates: AnySource<ValueUpdate<[Element]>> {
         var value = self.value
         return self.updates.map { event in
             event.map { change in
@@ -66,11 +73,6 @@ extension ObservableArrayType {
 
     public var anyObservableValue: AnyObservableValue<[Element]> {
         return AnyObservableValue(getter: { self.value }, updates: self.valueUpdates)
-    }
-
-    public var observableCount: AnyObservableValue<Int> {
-        return AnyObservableValue(getter: { self.count },
-                                  updates: self.updates.map { $0.map { $0.countChange } })
     }
 
     public var anyObservableArray: AnyObservableArray<Element> {

@@ -1,2 +1,1 @@
-github "attaswift/BTree" ~> 4.1
-github "attaswift/SipHash" ~> 1.2
+github "zwaldowski/BTree" "zwaldowski/swift-5.0"

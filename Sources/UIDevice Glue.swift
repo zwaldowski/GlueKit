@@ -21,7 +21,7 @@ open class GlueForUIDevice: GlueForNSObject {
     public lazy var orientation: AnyObservableValue<UIDeviceOrientation>
         = ObservableDeviceOrientation(self.object).anyObservableValue
 
-    public lazy var batteryState: AnyObservableValue<(UIDeviceBatteryState, Float)>
+    public lazy var batteryState: AnyObservableValue<(UIDevice.BatteryState, Float)>
         = ObservableBatteryState(self.object).anyObservableValue
 
     public lazy var proximityState: AnyObservableValue<Bool>
@@ -50,7 +50,7 @@ private final class ObservableDeviceOrientation: _BaseObservableValue<UIDeviceOr
         return device.orientation
     }
 
-    lazy var notificationSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: .UIDeviceOrientationDidChange, sender: self.device, queue: OperationQueue.main)
+    lazy var notificationSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: UIDevice.orientationDidChangeNotification, sender: self.device, queue: OperationQueue.main)
 
     func receive(_ notification: Notification) {
         beginTransaction()
@@ -86,15 +86,15 @@ private struct BatteryStateSink: UniqueOwnedSink {
 
 private var batteryKey: UInt8 = 0
 
-private final class ObservableBatteryState: _BaseObservableValue<(UIDeviceBatteryState, Float)> {
-    typealias Value = (UIDeviceBatteryState, Float)
+private final class ObservableBatteryState: _BaseObservableValue<(UIDevice.BatteryState, Float)> {
+    typealias Value = (UIDevice.BatteryState, Float)
 
     unowned let device: UIDevice
     var state: Value? = nil
     var didEnableBatteryMonitoring = false
 
-    lazy var batteryStateSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: .UIDeviceBatteryStateDidChange, sender: self.device, queue: OperationQueue.main)
-    lazy var batteryLevelSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: .UIDeviceBatteryLevelDidChange, sender: self.device, queue: OperationQueue.main)
+    lazy var batteryStateSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: UIDevice.batteryStateDidChangeNotification, sender: self.device, queue: OperationQueue.main)
+    lazy var batteryLevelSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: UIDevice.batteryLevelDidChangeNotification, sender: self.device, queue: OperationQueue.main)
 
     init(_ device: UIDevice) {
         self.device = device
@@ -154,7 +154,7 @@ private final class ObservableDeviceProximity: _BaseObservableValue<Bool> {
     var state: Bool? = nil
     var didEnableProximityMonitoring = false
 
-    lazy var notificationSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: .UIDeviceProximityStateDidChange, sender: self.device, queue: OperationQueue.main)
+    lazy var notificationSource: AnySource<Notification> = NotificationCenter.default.glue.source(forName: UIDevice.proximityStateDidChangeNotification, sender: self.device, queue: OperationQueue.main)
 
     init(_ device: UIDevice) {
         self.device = device

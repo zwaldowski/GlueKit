@@ -23,7 +23,11 @@ extension SinkType where Self: AnyObject {
     public func unowned() -> AnySink<Value> {
         return UnownedSink(self).anySink
     }
-    public var hashValue: Int { return ObjectIdentifier(self).hashValue }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+
     public static func ==(a: Self, b: Self) -> Bool { return a === b }
 }
 
@@ -46,8 +50,8 @@ public struct AnySink<Value>: SinkType {
         return self
     }
 
-    public var hashValue: Int {
-        return box.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(box)
     }
 
     public static func ==(left: AnySink, right: AnySink) -> Bool {
@@ -67,7 +71,7 @@ fileprivate class _AbstractSink<Value>: SinkType {
 
     func receive(_ value: Value) { abstract() }
 
-    var hashValue: Int { abstract() }
+    func hash(into hasher: inout Hasher) { abstract() }
 
     func isEqual(to other: _AbstractSink<Value>) -> Bool { abstract() }
 
@@ -95,8 +99,8 @@ fileprivate class SinkBox<Wrapped: SinkType>: _AbstractSink<Wrapped.Value> {
         contents.receive(value)
     }
 
-    override var hashValue: Int {
-        return contents.hashValue
+    override func hash(into hasher: inout Hasher) {
+        hasher.combine(contents)
     }
 
     override func isEqual(to other: _AbstractSink<Wrapped.Value>) -> Bool {
@@ -118,8 +122,8 @@ fileprivate class UnownedSink<Wrapped: SinkType & AnyObject>: _AbstractSink<Wrap
         wrapped.receive(value)
     }
 
-    override var hashValue: Int {
-        return wrapped.hashValue
+    override func hash(into hasher: inout Hasher) {
+        hasher.combine(wrapped)
     }
 
     override func isEqual(to other: _AbstractSink<Wrapped.Value>) -> Bool {

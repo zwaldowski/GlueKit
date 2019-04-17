@@ -10,44 +10,6 @@ import Foundation
 import XCTest
 @testable import GlueKit
 
-private func ==<T: Equatable>(a: ArrayModificationMergeResult<T>, b: ArrayModificationMergeResult<T>) -> Bool {
-    switch a {
-    case .disjunctOrderedAfter:
-        if case .disjunctOrderedAfter = b {
-            return true
-        }
-        return false
-    case .disjunctOrderedBefore:
-        if case .disjunctOrderedBefore = b {
-            return true
-        }
-        return false
-    case .collapsedToNoChange:
-        if case .collapsedToNoChange = b {
-            return true
-        }
-        return false
-    case .collapsedTo(let ae):
-        if case .collapsedTo(let be) = b {
-            return ae == be
-        }
-        return false
-    }
-}
-
-func ==<Element: Equatable>(a: [ArrayModification<Element>], b: [ArrayModification<Element>]) -> Bool {
-    return a.elementsEqual(b, by: ==)
-}
-func !=<Element: Equatable>(a: [ArrayModification<Element>], b: [ArrayModification<Element>]) -> Bool {
-    return !(a == b)
-}
-
-func XCTAssertEqual<Element: Equatable>(_ a: [ArrayModification<Element>], _ b: [ArrayModification<Element>], file: StaticString = #file, line: UInt = #line) {
-    if a != b {
-        XCTFail("\(a) is not equal to \(b)", file: file, line: line)
-    }
-}
-
 class ArrayModificationTests: XCTestCase {
 
     func testInsertion() {

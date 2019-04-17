@@ -16,7 +16,7 @@ private struct EmptySink: SinkType {
     func receive(_ value: Int) {
         // Do nothing
     }
-    var hashValue: Int { return id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     static func ==(left: EmptySink, right: EmptySink) -> Bool { return left.id == right.id }
 }
 
@@ -35,7 +35,7 @@ private struct RefCountingSink: SinkType {
     func receive(_ value: Int) {
         // Do nothing
     }
-    var hashValue: Int { return id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     static func ==(left: RefCountingSink, right: RefCountingSink) -> Bool { return left.id == right.id }
 }
 
@@ -47,7 +47,10 @@ private struct TestMethodSink: SinkType {
     func receive(_ value: Int) {
         method(object)(value)
     }
-    var hashValue: Int { return ObjectIdentifier(object).hashValue ^ id }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(object)
+        hasher.combine(id)
+    }
     static func ==(left: TestMethodSink, right: TestMethodSink) -> Bool { return left.object === right.object && left.id == right.id }
 }
 
@@ -58,7 +61,10 @@ private struct TestPartiallyAppliedMethodSink: SinkType {
     func receive(_ value: Int) {
         method(value)
     }
-    var hashValue: Int { return ObjectIdentifier(object).hashValue ^ id }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(object)
+        hasher.combine(id)
+    }
     static func ==(left: TestPartiallyAppliedMethodSink, right: TestPartiallyAppliedMethodSink) -> Bool {
         return left.object === right.object && left.id == right.id
     }
@@ -70,7 +76,10 @@ private struct HardwiredMethodSink: SinkType {
     func receive(_ value: Int) {
         object.receive(value)
     }
-    var hashValue: Int { return ObjectIdentifier(object).hashValue ^ id }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(object)
+        hasher.combine(id)
+    }
     static func ==(left: HardwiredMethodSink, right: HardwiredMethodSink) -> Bool { return left.object === right.object && left.id == right.id }
 }
 

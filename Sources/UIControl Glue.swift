@@ -8,7 +8,6 @@
 
 #if os(iOS)
 import UIKit
-import SipHash
 
 private var associatedObjectKey: Int8 = 0
 
@@ -19,13 +18,13 @@ extension UIControl {
 }
 
 open class GlueForUIControl: GlueForNSObject {
-    private struct ControlEventsTargetKey: SipHashable {
+    private struct ControlEventsTargetKey: Hashable {
         let sink: AnySink<UIEvent>
-        let events: UIControlEvents
-        
-        func appendHashes(to hasher: inout SipHasher) {
-            hasher.append(sink)
-            hasher.append(events.rawValue)
+        let events: UIControl.Event
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(sink)
+            hasher.combine(events.rawValue)
         }
         
         static func ==(left: ControlEventsTargetKey, right: ControlEventsTargetKey) -> Bool {
@@ -49,7 +48,7 @@ open class GlueForUIControl: GlueForNSObject {
         public typealias Value = UIEvent
         
         public let control: UIControl
-        public let events: UIControlEvents
+        public let events: UIControl.Event
         
         public func add<Sink: SinkType>(_ sink: Sink) where Sink.Value == Value {
             let target = control.glue.add(sink.anySink, for: events)
@@ -67,11 +66,11 @@ open class GlueForUIControl: GlueForNSObject {
 
     private var targets: [ControlEventsTargetKey: ControlEventsTarget] = [:]
 
-    public func source(for events: UIControlEvents = .primaryActionTriggered) -> ControlEventsSource {
+    public func source(for events: UIControl.Event = .primaryActionTriggered) -> ControlEventsSource {
         return ControlEventsSource(control: object, events: events)
     }
 
-    private func add(_ sink: AnySink<UIEvent>, for events: UIControlEvents) -> ControlEventsTarget {
+    private func add(_ sink: AnySink<UIEvent>, for events: UIControl.Event) -> ControlEventsTarget {
         let target = ControlEventsTarget(sink: sink)
         let key = ControlEventsTargetKey(sink: sink, events: events)
         precondition(targets[key] == nil)
@@ -79,7 +78,7 @@ open class GlueForUIControl: GlueForNSObject {
         return target
     }
 
-    private func remove(_ sink: AnySink<UIEvent>, for events: UIControlEvents) -> ControlEventsTarget {
+    private func remove(_ sink: AnySink<UIEvent>, for events: UIControl.Event) -> ControlEventsTarget {
         let key = ControlEventsTargetKey(sink: sink, events: events)
         let target = targets[key]!
         targets[key] = nil

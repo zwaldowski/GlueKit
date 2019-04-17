@@ -9,37 +9,7 @@
 import XCTest
 @testable import GlueKit
 
-class TestObservableSet<Element: Hashable>: _AbstractObservableSet<Element>, TransactionalThing {
-    var _signal: TransactionalSignal<SetChange<Element>>? = nil
-    var _transactionCount: Int = 0
-    private var _value: Set<Element>
-
-    init(_ value: Set<Element>) {
-        self._value = value
-    }
-
-    override var value: Set<Element> { return _value }
-
-    override func add<Sink: SinkType>(_ sink: Sink) where Sink.Value == Update<Change> {
-        signal.add(sink)
-    }
-
-    @discardableResult
-    override func remove<Sink: SinkType>(_ sink: Sink) -> Sink where Sink.Value == Update<Change> {
-        return signal.remove(sink)
-    }
-
-    func apply(_ change: Change) {
-        if change.isEmpty { return }
-        beginTransaction()
-        _value.subtract(change.removed)
-        _value.formUnion(change.inserted)
-        sendChange(change)
-        endTransaction()
-    }
-}
-
-private class TestObservableSet2<Element: Hashable>: ObservableSetType, TransactionalThing {
+class TestObservableSet<Element: Hashable>: ObservableSetType, TransactionalThing {
     typealias Change = SetChange<Element>
 
     var _signal: TransactionalSignal<SetChange<Element>>? = nil
@@ -50,7 +20,13 @@ private class TestObservableSet2<Element: Hashable>: ObservableSetType, Transact
         self._value = value
     }
 
-    var value: Set<Element> { return _value }
+    var count: Int {
+        return _value.count
+    }
+
+    var value: Set<Element> {
+        return _value
+    }
 
     func add<Sink: SinkType>(_ sink: Sink) where Sink.Value == Update<Change> {
         signal.add(sink)
@@ -69,47 +45,15 @@ private class TestObservableSet2<Element: Hashable>: ObservableSetType, Transact
         sendChange(change)
         endTransaction()
     }
+
+    // TODO: Cause of a mysterious compiler crash in Swift 5.0
+    var isBuffered: Bool {
+        return false
+    }
+
 }
 
-
-private class TestUpdatableSet<Element: Hashable>: _AbstractUpdatableSet<Element>, TransactionalThing {
-    var _signal: TransactionalSignal<SetChange<Element>>? = nil
-    var _transactionCount: Int = 0
-    var _value: Set<Element>
-
-    init(_ value: Set<Element>) {
-        self._value = value
-    }
-
-    override var value: Set<Element> {
-        get { return _value }
-        set { self.apply(SetChange(removed: _value, inserted: newValue)) }
-    }
-
-    override func add<Sink: SinkType>(_ sink: Sink) where Sink.Value == Update<Change> {
-        signal.add(sink)
-    }
-
-    @discardableResult
-    override func remove<Sink: SinkType>(_ sink: Sink) -> Sink where Sink.Value == Update<Change> {
-        return signal.remove(sink)
-    }
-
-    override func apply(_ update: Update<Change>) {
-        switch update {
-        case .beginTransaction:
-            beginTransaction()
-        case .change(let change):
-            _value.subtract(change.removed)
-            _value.formUnion(change.inserted)
-            sendChange(change)
-        case .endTransaction:
-            endTransaction()
-        }
-    }
-}
-
-private class TestUpdatableSet2<Element: Hashable>: UpdatableSetType, TransactionalThing {
+private class TestUpdatableSet<Element: Hashable>: UpdatableSetType, TransactionalThing {
     typealias Change = SetChange<Element>
 
     var _signal: TransactionalSignal<SetChange<Element>>? = nil
@@ -118,6 +62,10 @@ private class TestUpdatableSet2<Element: Hashable>: UpdatableSetType, Transactio
 
     init(_ value: Set<Element>) {
         self._value = value
+    }
+
+    var count: Int {
+        return _value.count
     }
 
     var value: Set<Element> {
@@ -134,12 +82,6 @@ private class TestUpdatableSet2<Element: Hashable>: UpdatableSetType, Transactio
         return signal.remove(sink)
     }
 
-    func withTransaction<Result>(_ body: () -> Result) -> Result {
-        beginTransaction()
-        defer { endTransaction() }
-        return body()
-    }
-
     func apply(_ update: Update<Change>) {
         switch update {
         case .beginTransaction:
@@ -152,8 +94,19 @@ private class TestUpdatableSet2<Element: Hashable>: UpdatableSetType, Transactio
             endTransaction()
         }
     }
-}
 
+    // TODO: Cause of a mysterious compiler crash in Swift 5.0
+    var isBuffered: Bool {
+        return false
+    }
+
+    // TODO: Cause of a mysterious compiler crash in Swift 5.0
+    func removeAll() {
+        if !isEmpty {
+            apply(SetChange(removed: self.value))
+        }
+    }
+}
 
 private func describe(_ update: ValueUpdate<Set<Int>>) -> String {
     switch update {
@@ -327,18 +280,10 @@ class ObservableSetTypeTests: XCTestCase {
         checkObservableSet(make: { TestObservableSet($0) }, convert: { $0 }, apply: { $0.apply($1) })
         checkObservableSet(make: { TestObservableSet($0) }, convert: { $0.anyObservableSet }, apply: { $0.apply($1) })
 
-        checkObservableSet(make: { TestObservableSet2($0) }, convert: { $0 }, apply: { $0.apply($1) })
-        checkObservableSet(make: { TestObservableSet2($0) }, convert: { $0.anyObservableSet }, apply: { $0.apply($1) })
-
         checkObservableSet(make: { TestUpdatableSet($0) }, convert: { $0 }, apply: { $0.apply($1) })
         checkObservableSet(make: { TestUpdatableSet($0) }, convert: { $0.anyUpdatableSet }, apply: { $0.apply($1) })
         checkObservableSet(make: { TestUpdatableSet($0) }, convert: { $0.anyObservableSet }, apply: { $0.apply($1) })
         checkObservableSet(make: { TestUpdatableSet($0) }, convert: { $0.anyUpdatableSet.anyObservableSet }, apply: { $0.apply($1) })
-
-        checkObservableSet(make: { TestUpdatableSet2($0) }, convert: { $0 }, apply: { $0.apply($1) })
-        checkObservableSet(make: { TestUpdatableSet2($0) }, convert: { $0.anyUpdatableSet }, apply: { $0.apply($1) })
-        checkObservableSet(make: { TestUpdatableSet2($0) }, convert: { $0.anyObservableSet }, apply: { $0.apply($1) })
-        checkObservableSet(make: { TestUpdatableSet2($0) }, convert: { $0.anyUpdatableSet.anyObservableSet }, apply: { $0.apply($1) })
 
         checkObservableSet(isBuffered: true, make: { SetVariable<Int>($0) }, convert: { $0 }, apply: { $0.apply($1) })
 
@@ -379,9 +324,6 @@ class ObservableSetTypeTests: XCTestCase {
         checkUpdatableSet { TestUpdatableSet<Int>($0) }
         checkUpdatableSet { TestUpdatableSet<Int>($0).anyUpdatableSet }
         checkUpdatableSet { TestUpdatableSet<Int>($0).anyUpdatableSet.anyUpdatableSet }
-        checkUpdatableSet { TestUpdatableSet2<Int>($0) }
-        checkUpdatableSet { TestUpdatableSet2<Int>($0).anyUpdatableSet }
-        checkUpdatableSet { TestUpdatableSet2<Int>($0).anyUpdatableSet.anyUpdatableSet }
         checkUpdatableSet { SetVariable<Int>($0) }
         checkUpdatableSet { SetVariable<Int>($0).anyUpdatableSet }
 
@@ -417,4 +359,3 @@ class ObservableSetTypeTests: XCTestCase {
         XCTAssertEqual(containsTwo.value, true)
     }
 }
-
